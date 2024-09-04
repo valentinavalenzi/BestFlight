@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BestFlight</string>
+    <string name="welcome">Hola</string>
+    <string name="profile">My Account</string>
+    <string name="trips">Recent Trips</string>
+    <string name="notifications">Notifications</string>
+    <string name="home_greeting">Where would you like to go?</string>
+    <string name="search_bar">Search city…</string>
+</resources>
