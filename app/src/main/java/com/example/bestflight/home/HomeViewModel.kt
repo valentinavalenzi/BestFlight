@@ -6,10 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.bestflight.apiManager.ApiServiceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.map
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -23,6 +26,9 @@ class HomeViewModel @Inject constructor(
     private val _flights = MutableStateFlow(listOf<FlightModel>())
     val flights = _flights.asStateFlow()
 
+    private val _filteredFlights = MutableStateFlow(listOf<FlightModel>())
+    val filteredFlights = _filteredFlights.asStateFlow()
+
     private val _showRetry = MutableStateFlow(false)
     val showRetry = _showRetry.asStateFlow()
 
@@ -34,6 +40,13 @@ class HomeViewModel @Inject constructor(
         loadFlights()
     }
 
+    fun onSearchTextChanged(text: String) {
+        val updatedFlights = _flights.value.filter { flight ->
+            flight.to.contains(text, ignoreCase = true)
+        }
+        _filteredFlights.value = updatedFlights
+    }
+
     private fun loadFlights() {
         _loadingFlights.value = true
         apiServiceImpl.getFlights(
@@ -41,6 +54,7 @@ class HomeViewModel @Inject constructor(
             onSuccess = {
                 viewModelScope.launch {
                     _flights.emit(it)
+                    _filteredFlights.emit(it)
                 }
                 _showRetry.value = false
             },

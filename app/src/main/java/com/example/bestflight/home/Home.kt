@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bestflight.R
 import com.example.bestflight.components.FlightCard
+import com.example.bestflight.components.SearchBar
 import com.example.bestflight.ui.theme.Blue
 import com.example.bestflight.ui.theme.DarkBlue
 import com.example.bestflight.ui.theme.largeText
@@ -54,12 +55,13 @@ import java.util.Date
 @Composable
 fun Home() {
     var searchText by remember { mutableStateOf("") }
+    val viewModel = hiltViewModel<HomeViewModel>()
 
     // Main container
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBlue) // TODO: add background image
+            .background(DarkBlue)
             .padding(16.dp),
     ) {
         // Greeting
@@ -75,62 +77,38 @@ fun Home() {
         )
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Search Bar
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    Color.White,
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(16.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Search,
-                contentDescription = "Search Icon",
-                tint = Color.Gray,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            BasicTextField(
-                value = searchText,
-                onValueChange = { searchText = it },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                textStyle = TextStyle(fontSize = 18.sp, color = Color.Black),
-                decorationBox = { innerTextField ->
-                    if (searchText.isEmpty()) {
-                        Text(
-                            text = stringResource(id = R.string.search_bar),
-                            style = TextStyle(fontSize = 18.sp, color = Color.Gray)
-                        )
-                    }
-                    innerTextField()
-                }
-            )
-        }
-
+        SearchBar(
+            onChange = {
+                searchText = it
+                viewModel.onSearchTextChanged(it)
+            },
+            onClear = {
+                searchText = ""
+                viewModel.onSearchTextChanged("")
+            }
+        )
         Spacer(modifier = Modifier.height(20.dp))
 
-        // ViewModel for loading flights
-        val viewModel = hiltViewModel<HomeViewModel>()
-        val flights by viewModel.flights.collectAsState()
+        val flights by viewModel.filteredFlights.collectAsState()
         val loading by viewModel.loadingFlights.collectAsState()
         val showRetry by viewModel.showRetry.collectAsState()
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Display the flight list based on loading state
+        // Display flight list based on loading state
         when {
             loading -> {
                 Box(modifier = Modifier.fillMaxSize()) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(64.dp).align(Alignment.Center),
+                        modifier = Modifier
+                            .size(64.dp)
+                            .align(Alignment.Center),
                         color = Blue,
                         trackColor = DarkBlue,
                     )
                 }
             }
+
             showRetry -> {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
@@ -148,6 +126,7 @@ fun Home() {
                     }
                 }
             }
+
             else -> {
                 LazyColumn {
                     items(flights) { flight ->
