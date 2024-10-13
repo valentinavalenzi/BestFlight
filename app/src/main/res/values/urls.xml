@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="flight_prices_url">https://retoolapi.dev/PbkA2J/</string>
+    <string name="flight_prices_url" translatable="false">https://retoolapi.dev/PbkA2J/</string>
 </resources>

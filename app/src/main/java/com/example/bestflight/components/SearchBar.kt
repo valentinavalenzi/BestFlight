@@ -28,6 +28,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.bestflight.R
 
 @Composable
@@ -51,7 +52,9 @@ fun SearchBar(
             imageVector = Icons.Filled.Search,
             contentDescription = "Search Icon",
             tint = Color.Gray,
-            modifier = Modifier.size(24.dp).align(Alignment.CenterVertically)
+            modifier = Modifier
+                .size(24.dp)
+                .align(Alignment.CenterVertically)
 
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -94,5 +97,12 @@ fun SearchBar(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun SearchBarPreview() {
+    SearchBar(onChange = {}) {
     }
 }

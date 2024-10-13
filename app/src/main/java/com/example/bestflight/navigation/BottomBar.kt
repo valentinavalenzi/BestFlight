@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.bestflight.ui.theme.DarkBlue
 import navigation.BestFlightScreen
 
@@ -42,18 +43,13 @@ fun BottomBar(
         selectedIcon = Icons.Filled.Place,
         unselectedIcon = Icons.Outlined.Place
     )
-    val notificationsTab = TabBarItem(
-        title = BestFlightScreen.Notifications.name,
-        selectedIcon = Icons.Filled.Notifications,
-        unselectedIcon = Icons.Outlined.Notifications
-    )
     val myAccountTab = TabBarItem(
         title = BestFlightScreen.Account.name,
         selectedIcon = Icons.Filled.Person,
         unselectedIcon = Icons.Outlined.Person
     )
 
-    val tabBarItems = listOf(homeTab, myTripsTab, notificationsTab, myAccountTab)
+    val tabBarItems = listOf(homeTab, myTripsTab, myAccountTab)
 
     TabView(tabBarItems, onNavigate)
 }
@@ -129,5 +125,12 @@ fun TabBarBadgeView(count: Int? = null) {
         Badge {
             Text(count.toString())
         }
+    }
+}
+
+@Preview
+@Composable
+fun BottomBarPreview() {
+    BottomBar {
     }
 }

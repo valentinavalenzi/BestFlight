@@ -20,7 +20,9 @@ fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostControl
     NavHost(
         navController = navController,
         startDestination = BestFlightScreen.Home.name,
-        modifier = Modifier.fillMaxSize().padding(innerPadding).padding(horizontal = 10.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
     ) {
         composable(route = BestFlightScreen.Home.name) {
             Home()

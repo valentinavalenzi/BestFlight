@@ -10,13 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.bestflight.R
-import com.example.bestflight.myTrips.upcomingTrips.UpcomingTripsViewModel
 import com.example.bestflight.ui.theme.largeText
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun MyTrips() {
-    val viewModel = hiltViewModel<UpcomingTripsViewModel>()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterVertically),

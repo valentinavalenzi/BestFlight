@@ -20,11 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.example.bestflight.R
 import com.example.bestflight.home.FlightModel
 import com.example.bestflight.ui.theme.DarkBlue
 
@@ -52,7 +54,7 @@ fun FlightCard(
                     color = Color.DarkGray
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "→", fontSize = 16.sp, color = Color.LightGray)
+                Text(text = stringResource(id = R.string.arrow), fontSize = 16.sp, color = Color.LightGray)
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = flight.to,
@@ -63,7 +65,7 @@ fun FlightCard(
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Duration: ${flight.flight_duration}",
+                text = stringResource(id = R.string.duration) + flight.flight_duration,
                 fontSize = 12.sp,
                 color = Color.Gray
             )
@@ -87,7 +89,7 @@ fun FlightCard(
 
         // Flight Price
         Text(
-            text = "$" + flight.price,
+            text = stringResource(id = R.string.money_sign) + flight.price,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             color = DarkBlue
