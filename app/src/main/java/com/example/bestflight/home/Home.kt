@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -40,6 +39,7 @@ import com.example.bestflight.components.SearchBar
 import com.example.bestflight.myAccount.AccountViewModel
 import com.example.bestflight.ui.theme.Blue
 import com.example.bestflight.ui.theme.DarkBlue
+import com.example.bestflight.ui.theme.White
 import com.example.bestflight.ui.theme.largeText
 import com.example.bestflight.ui.theme.smallText
 import com.example.bestflight.ui.theme.superLargeText
@@ -91,12 +91,12 @@ fun Home( onNavigateToFlight: (String) -> Unit) {
             Text(
                 text = stringResource(id = R.string.welcome) + ", " + userName,
                 fontSize = smallText,
-                color = colorResource(id = R.color.white)
+                color = White
             )
             Text(
                 text = stringResource(id = (R.string.home_greeting)),
                 fontSize = superLargeText,
-                color = colorResource(id = R.color.white),
+                color = White,
                 fontWeight = FontWeight.Bold,
                 style = TextStyle(
                     lineHeight = 50.sp,

@@ -1,10 +1,5 @@
 package com.example.bestflight.navigation
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,7 +12,6 @@ import com.example.bestflight.flightDetails.FlightDetail
 import com.example.bestflight.home.Home
 import com.example.bestflight.myAccount.Account
 import com.example.bestflight.myTrips.MyTrips
-import navigation.BestFlightScreen
 
 @Composable
 fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostController) {

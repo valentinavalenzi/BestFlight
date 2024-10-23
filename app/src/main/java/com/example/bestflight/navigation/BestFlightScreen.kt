@@ -1,4 +1,4 @@
-package navigation
+package com.example.bestflight.navigation
 
 enum class BestFlightScreen {
     Home,

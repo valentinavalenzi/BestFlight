@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
 
     fun onSearchTextChanged(text: String) {
         val updatedFlights = _flights.value.filter { flight ->
-            flight.to.contains(text, ignoreCase = true)
+            flight.to.contains(text, ignoreCase = true) or flight.to_name.contains(text, ignoreCase = true)
         }
         _filteredFlights.value = updatedFlights
     }
