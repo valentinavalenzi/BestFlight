@@ -1,10 +1,12 @@
-package com.example.bestflight.home
+package com.example.bestflight.data
 
-import java.sql.Time
-import java.util.Date
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class FlightModel(
-    val id: String,
+@Entity
+data class Trip(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val from: String,
     val to: String,
     val to_name: String,
@@ -13,7 +15,5 @@ data class FlightModel(
     val flight_duration: String,
     val stops_number: String,
     val flight_number: String,
-    val destination_img: String,
     val included_baggage: String,
-    val price: String,
 )

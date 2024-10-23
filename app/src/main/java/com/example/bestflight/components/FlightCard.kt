@@ -1,6 +1,7 @@
 package com.example.bestflight.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import com.example.bestflight.R
 import com.example.bestflight.home.FlightModel
 import com.example.bestflight.ui.theme.DarkBlue
@@ -33,14 +33,16 @@ import com.example.bestflight.ui.theme.DarkBlue
 @Composable
 fun FlightCard(
     flight: FlightModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
             .background(Color.White, shape = RoundedCornerShape(10.dp))
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

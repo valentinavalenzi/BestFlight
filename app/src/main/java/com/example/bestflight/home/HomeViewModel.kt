@@ -6,13 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.bestflight.apiManager.ApiServiceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlinx.coroutines.flow.map
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -36,7 +33,7 @@ class HomeViewModel @Inject constructor(
         loadFlights()
     }
 
-    fun retryLoadingRanking() {
+    fun retryLoadingFlights() {
         loadFlights()
     }
 

@@ -2,17 +2,28 @@
     <string name="app_name" translatable="false">BestFlight</string>
     <string name="welcome">Hello</string>
     <string name="profile">My Account</string>
-    <string name="trips">Recent Trips</string>
+    <string name="trips">My Trips</string>
     <string name="notifications">Notifications</string>
     <string name="home_greeting">Where would you like to go?</string>
     <string name="search_bar">Search city…</string>
     <string name="please_try_again">Please, try again later.</string>
     <string name="try_again">Try Again</string>
     <string name="cant_get_flights">Couldn\'t get flights. Please try again later</string>
+    <string name="cant_get_flight">Couldn\'t get flight information</string>
     <string name="money_sign" translatable="false">$</string>
     <string name="duration">Duration: </string>
     <string name="arrow" translatable="false">→</string>
     <string name="set_user_name">Please, enter your name: </string>
     <string name="ok" translatable="false">Ok</string>
     <string name="name_example" translatable="false">John Doe</string>
+    <string name="flight_from">Flight from </string>
+    <string name="to">to</string>
+    <string name="flight_number">Flight Number:</string>
+    <string name="departure_time">Departure Time:</string>
+    <string name="arrival_time">Arrival Time:</string>
+    <string name="stops">Stops:</string>
+    <string name="baggage_included">Baggage Included:</string>
+    <string name="price">Price:</string>
+    <string name="purchase_flight">Purchase Flight</string>
+    <string name="no_trips">You have no trips purchased yet!</string>
 </resources>

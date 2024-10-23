@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,7 +45,8 @@ import com.example.bestflight.ui.theme.smallText
 import com.example.bestflight.ui.theme.superLargeText
 
 @Composable
-fun Home() {
+fun Home( onNavigateToFlight: (String) -> Unit) {
+
     var searchText by remember { mutableStateOf("") }
     val viewModel = hiltViewModel<HomeViewModel>()
 
@@ -88,7 +88,8 @@ fun Home() {
                 .padding(24.dp),
         ) {
             // Greeting
-            Text(text = stringResource(id = R.string.welcome) + ", " + userName,
+            Text(
+                text = stringResource(id = R.string.welcome) + ", " + userName,
                 fontSize = smallText,
                 color = colorResource(id = R.color.white)
             )
@@ -151,7 +152,7 @@ fun Home() {
                             textAlign = TextAlign.Center,
                             color = Color.White,
                         )
-                        Button(onClick = { viewModel.retryLoadingRanking() }) {
+                        Button(onClick = { viewModel.retryLoadingFlights() }) {
                             stringResource(id = R.string.try_again)
                         }
                     }
@@ -160,7 +161,7 @@ fun Home() {
                 else -> {
                     LazyColumn {
                         items(flights) { flight ->
-                            FlightsView(flight = flight)
+                            FlightsView(flight = flight, onClick = { onNavigateToFlight(flight.id) })
                         }
                     }
                 }
@@ -172,9 +173,12 @@ fun Home() {
 @Composable
 fun FlightsView(
     flight: FlightModel,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit
 ) {
-    FlightCard(flight = flight, modifier = modifier)
+    FlightCard(
+        flight = flight,
+        onClick = onClick
+    )
 }
 
 @Preview
