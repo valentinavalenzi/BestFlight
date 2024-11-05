@@ -3,6 +3,7 @@ package com.example.bestflight.apiManager
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import com.example.bestflight.R
 import com.example.bestflight.home.FlightModel
 import retrofit.Call
@@ -55,7 +56,7 @@ class ApiServiceImpl @Inject constructor() {
         context: Context,
         flightId: String,
         onSuccess: (FlightModel) -> Unit,
-        onFail: () -> Unit,
+        onFail: @Composable () -> Unit,
         loadingFinished: () -> Unit
     ) {
         val retrofit: Retrofit = Retrofit.Builder()
@@ -83,7 +84,6 @@ class ApiServiceImpl @Inject constructor() {
 
             override fun onFailure(t: Throwable?) {
                 Toast.makeText(context, R.string.cant_get_flight, Toast.LENGTH_SHORT).show()
-                onFail()
                 loadingFinished()
             }
         })

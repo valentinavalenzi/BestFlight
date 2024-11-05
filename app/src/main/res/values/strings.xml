@@ -26,4 +26,7 @@
     <string name="price">Price:</string>
     <string name="purchase_flight">Purchase Flight</string>
     <string name="no_trips">You have no trips purchased yet!</string>
+    <string name="destination">Destination: </string>
+    <string name="error">There has been an error.</string>
+    <string name="ticket_already_bought">You have already bought this ticket.</string>
 </resources>

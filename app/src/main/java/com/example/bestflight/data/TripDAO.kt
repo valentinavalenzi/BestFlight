@@ -17,4 +17,6 @@ interface TripDAO {
     suspend fun delete(trip: Trip)
     @Query("SELECT * FROM Trip")
     fun getMyTrips(): LiveData<List<Trip>>
+    @Query("SELECT * FROM Trip WHERE id = :flightId LIMIT 1")
+    suspend fun getTripByFlightId(flightId: String): Trip?
 }

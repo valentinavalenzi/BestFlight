@@ -1,9 +1,12 @@
 package com.example.bestflight.myTrips
 
 import android.content.Context
+import android.widget.Toast
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.example.bestflight.R
 import com.example.bestflight.apiManager.ApiServiceImpl
 import com.example.bestflight.data.BestFlightDatabase
 import com.example.bestflight.data.Trip
@@ -24,33 +27,49 @@ class MyTripsViewModel @Inject constructor(
 
     fun addTrip(flightId: String) {
         viewModelScope.launch {
-            apiServiceImpl.getFlightById(
-                context = context,
-                flightId = flightId,
-                onSuccess = { flightModel ->
-                    viewModelScope.launch {
-                        // Create a Trip from the flight details
-                        val trip = Trip(
-                            from = flightModel.from,
-                            to = flightModel.to,
-                            to_name = flightModel.to_name,
-                            departure_time = flightModel.departure_time,
-                            arrival_time = flightModel.arrival_time,
-                            flight_duration = flightModel.flight_duration,
-                            stops_number = flightModel.stops_number,
-                            flight_number = flightModel.flight_number,
-                            included_baggage = flightModel.included_baggage
-                        )
-                        bestFlightDatabase.tripDao().insert(trip)
+            val existingTrip = bestFlightDatabase.tripDao().getTripByFlightId(flightId)
+            if (existingTrip == null) {
+                apiServiceImpl.getFlightById(
+                    context = context,
+                    flightId = flightId,
+                    onSuccess = { flightModel ->
+                        viewModelScope.launch {
+                            // Create a Trip from the flight details
+                            val trip = Trip(
+                                from = flightModel.from,
+                                to = flightModel.to,
+                                to_name = flightModel.to_name,
+                                departure_time = flightModel.departure_time,
+                                arrival_time = flightModel.arrival_time,
+                                flight_duration = flightModel.flight_duration,
+                                stops_number = flightModel.stops_number,
+                                flight_number = flightModel.flight_number,
+                                included_baggage = flightModel.included_baggage
+                            )
+                            bestFlightDatabase.tripDao().insert(trip)
+                            //TODO fix string here
+                            Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    onFail = {
+                        Toast.makeText(context, stringResource(id = R.string.error) + stringResource(id = R.string.try_again), Toast.LENGTH_SHORT).show()
+                    },
+                    loadingFinished = {
+                        // Handle loading finished, if needed
                     }
-                },
-                onFail = {
-                    // Handle error here (e.g., show a retry option)
-                },
-                loadingFinished = {
-                    // Handle loading finished, if needed
-                }
-            )
+                )
+            } else { //TODO fix string here
+                Toast.makeText(context, "You have already bought this ticket", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
+    fun deleteTrip(trip: Trip) {
+        viewModelScope.launch {
+            bestFlightDatabase.tripDao().delete(trip)
+            // TODO: fix this string
+            Toast.makeText(context, "Trip deleted successfully!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }
