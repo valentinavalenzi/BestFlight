@@ -1,11 +1,19 @@
 package com.example.bestflight.flightDetails
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.widget.Toast
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bestflight.R
 import com.example.bestflight.apiManager.ApiServiceImpl
 import com.example.bestflight.home.FlightModel
+import com.example.bestflight.security.BiometricAuthManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +25,7 @@ import javax.inject.Inject
 class FlightDetailViewModel @Inject constructor (
     @ApplicationContext private val context: Context,
     private val apiServiceImpl: ApiServiceImpl,
+    private val biometricAuthManager: BiometricAuthManager,
     savedStateHandle: SavedStateHandle
     ) : ViewModel() {
 
@@ -30,6 +39,9 @@ class FlightDetailViewModel @Inject constructor (
 
         private val _showRetry = MutableStateFlow(false)
         val showRetry = _showRetry.asStateFlow()
+
+        private val _isBiometricAuthenticated = MutableStateFlow(false)
+        val isBiometricAuthenticated = _isBiometricAuthenticated.asStateFlow()
 
         fun retryLoadingFlight(flightId: String) {
             loadFlight(flightId)
@@ -58,4 +70,31 @@ class FlightDetailViewModel @Inject constructor (
                 }
             )
         }
-    }
+
+        fun authenticateBiometrically(onSuccess: () -> Unit, activityContext: Context) {
+            biometricAuthManager.authenticate(
+                context = activityContext,
+                onSuccess = {
+                    _isBiometricAuthenticated.value = true
+                    onSuccess()
+                },
+                onError = {
+                    _isBiometricAuthenticated.value = false
+                    Toast.makeText(
+                        context,
+                        ContextCompat.getString(context, R.string.auth_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                onFail = {
+                    _isBiometricAuthenticated.value = false
+                    Toast.makeText(
+                        context,
+                        ContextCompat.getString(context, R.string.auth_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
+        }
+
+}

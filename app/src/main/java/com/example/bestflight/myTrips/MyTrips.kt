@@ -29,6 +29,7 @@ import com.example.bestflight.ui.theme.largeText
 import com.example.bestflight.ui.theme.superLargeText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.IconButton
+import com.example.bestflight.ui.theme.White
 
 @Composable
 fun MyTrips() {
@@ -43,7 +44,7 @@ fun MyTrips() {
         Text(
             text = stringResource(id = (R.string.trips)),
             fontSize = superLargeText,
-            color = DarkBlue,
+            color = White,
             fontWeight = FontWeight.Bold,
             style = TextStyle(
                 lineHeight = 50.sp,

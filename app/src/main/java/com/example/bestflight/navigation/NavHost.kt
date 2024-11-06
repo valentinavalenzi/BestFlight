@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
 import com.example.bestflight.flightDetails.FlightDetail
 import com.example.bestflight.home.Home
-import com.example.bestflight.myAccount.Account
 import com.example.bestflight.myTrips.MyTrips
 
 @Composable
@@ -30,9 +29,6 @@ fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostControl
         }
         composable(route = BestFlightScreen.MyTrips.name) {
             MyTrips()
-        }
-        composable(route = BestFlightScreen.Account.name) {
-            Account()
         }
         composable(
             route = "${BestFlightScreen.FlightDetail.name}/{flightId}",

@@ -7,6 +7,7 @@ data class FlightModel(
     val id: String,
     val from: String,
     val to: String,
+    val from_name: String,
     val to_name: String,
     val departure_time: String,
     val arrival_time: String,

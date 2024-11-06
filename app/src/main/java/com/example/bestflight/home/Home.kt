@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -36,7 +37,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bestflight.R
 import com.example.bestflight.components.FlightCard
 import com.example.bestflight.components.SearchBar
-import com.example.bestflight.myAccount.AccountViewModel
 import com.example.bestflight.ui.theme.Blue
 import com.example.bestflight.ui.theme.DarkBlue
 import com.example.bestflight.ui.theme.White
@@ -45,13 +45,13 @@ import com.example.bestflight.ui.theme.smallText
 import com.example.bestflight.ui.theme.superLargeText
 
 @Composable
-fun Home( onNavigateToFlight: (String) -> Unit) {
+fun Home(onNavigateToFlight: (String) -> Unit) {
 
-    var searchText by remember { mutableStateOf("") }
+    var searchFromText by remember { mutableStateOf("") }
+    var searchDestinationText by remember { mutableStateOf("") }
     val viewModel = hiltViewModel<HomeViewModel>()
 
-    val accountViewModel = hiltViewModel<AccountViewModel>()
-    val userName by accountViewModel.userName.collectAsState()
+    val userName by viewModel.userName.collectAsState()
     var userNameLocal by remember {
         mutableStateOf("")
     }
@@ -75,16 +75,15 @@ fun Home( onNavigateToFlight: (String) -> Unit) {
             )
             Button(
                 modifier = Modifier.background(color = Color.Transparent),
-                onClick = { accountViewModel.saveToDataStore(userNameLocal) }) {
+                onClick = { viewModel.saveToDataStore(userNameLocal) }) {
                 Text(text = stringResource(id = R.string.ok))
             }
         }
     } else {
-        // Main container
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DarkBlue)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(24.dp),
         ) {
             // Greeting
@@ -105,14 +104,27 @@ fun Home( onNavigateToFlight: (String) -> Unit) {
             )
             Spacer(modifier = Modifier.height(20.dp))
 
+            Text(text = stringResource(id = R.string.from), fontSize = largeText, color = White)
             SearchBar(
                 onChange = {
-                    searchText = it
-                    viewModel.onSearchTextChanged(it)
+                    searchFromText = it
+                    viewModel.onSearchFromTextChanged(it)
                 },
                 onClear = {
-                    searchText = ""
-                    viewModel.onSearchTextChanged("")
+                    searchFromText = ""
+                    viewModel.onSearchFromTextChanged("")
+                }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(text = stringResource(id = R.string.to2), fontSize = largeText, color = White)
+            SearchBar(
+                onChange = {
+                    searchDestinationText = it
+                    viewModel.onSearchDestinationTextChanged(it)
+                },
+                onClear = {
+                    searchDestinationText = ""
+                    viewModel.onSearchDestinationTextChanged("")
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -161,7 +173,9 @@ fun Home( onNavigateToFlight: (String) -> Unit) {
                 else -> {
                     LazyColumn {
                         items(flights) { flight ->
-                            FlightsView(flight = flight, onClick = { onNavigateToFlight(flight.id) })
+                            FlightsView(
+                                flight = flight,
+                                onClick = { onNavigateToFlight(flight.id) })
                         }
                     }
                 }

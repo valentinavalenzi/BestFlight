@@ -1,5 +1,6 @@
 package com.example.bestflight.flightDetails
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,10 +17,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,9 +32,14 @@ import coil.compose.AsyncImage
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bestflight.R
 import com.example.bestflight.myTrips.MyTripsViewModel
+import com.example.bestflight.security.BiometricAuthManager
 import com.example.bestflight.ui.theme.Blue
 import com.example.bestflight.ui.theme.largeText
 import com.example.bestflight.ui.theme.mediumText
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+
 
 @Composable
 fun FlightDetail(flightId: String) {
@@ -45,7 +53,15 @@ fun FlightDetail(flightId: String) {
 //        flightDetailViewModel.retryLoadingFlight(flightId)
 //    }
 
-    val myTripsViewModel = hiltViewModel<MyTripsViewModel>() //when purchased, we need to add a trip to My Trips
+    val context = LocalContext.current
+    val isAuthenticated by flightDetailViewModel.isBiometricAuthenticated.collectAsState()
+    val biometricManager = remember { BiometricManager.from(context) }
+    val isBiometricAvailable = remember {
+        biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+    }
+
+    val myTripsViewModel =
+        hiltViewModel<MyTripsViewModel>() // when purchased, we need to add a trip to My Trips
 
     flightDetail?.let { flight ->
         Column(modifier = Modifier.fillMaxSize()) {
@@ -131,7 +147,21 @@ fun FlightDetail(flightId: String) {
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(
-                            onClick = { myTripsViewModel.addTrip(flightId) },
+                            onClick = {
+                                when (isBiometricAvailable) {
+                                    BiometricManager.BIOMETRIC_SUCCESS -> {
+                                        flightDetailViewModel.authenticateBiometrically(
+                                            onSuccess = {
+                                                myTripsViewModel.addTrip(flightId)
+                                            },
+                                            activityContext = context
+                                        )
+                                    }
+                                    else -> {
+                                        Toast.makeText(context, "Biometric authentication not supported.", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            },
                             shape = RoundedCornerShape(50),
                             modifier = Modifier
                                 .padding(16.dp)

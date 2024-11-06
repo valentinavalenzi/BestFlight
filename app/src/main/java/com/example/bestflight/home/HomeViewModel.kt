@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bestflight.apiManager.ApiServiceImpl
+import com.example.bestflight.data.PreferencesKeys
+import com.example.bestflight.data.getFromDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,19 +32,37 @@ class HomeViewModel @Inject constructor(
     private val _showRetry = MutableStateFlow(false)
     val showRetry = _showRetry.asStateFlow()
 
+    private var _userName = MutableStateFlow("")
+    val userName = _userName.asStateFlow()
+
+    private val _fromText = MutableStateFlow("")
+    private val _toText = MutableStateFlow("")
+
     init {
         loadFlights()
+        getNameFromDataStore()
+        viewModelScope.launch {
+            combine(_flights, _fromText, _toText) { flights, fromText, toText ->
+                flights.filter { flight ->
+                    (fromText.isEmpty() || flight.from.contains(fromText, ignoreCase = true) || flight.from_name.contains(fromText, ignoreCase = true)) &&
+                            (toText.isEmpty() || flight.to.contains(toText, ignoreCase = true) || flight.to_name.contains(toText, ignoreCase = true))
+                }
+            }.collect {
+                _filteredFlights.value = it
+            }
+        }
     }
 
     fun retryLoadingFlights() {
         loadFlights()
     }
 
-    fun onSearchTextChanged(text: String) {
-        val updatedFlights = _flights.value.filter { flight ->
-            flight.to.contains(text, ignoreCase = true) or flight.to_name.contains(text, ignoreCase = true)
-        }
-        _filteredFlights.value = updatedFlights
+    fun onSearchFromTextChanged(text: String) {
+        _fromText.value = text
+    }
+
+    fun onSearchDestinationTextChanged(text: String) {
+        _toText.value = text
     }
 
     private fun loadFlights() {
@@ -63,4 +84,19 @@ class HomeViewModel @Inject constructor(
             }
         )
     }
+
+    private fun getNameFromDataStore() {
+        viewModelScope.launch {
+            getFromDataStore(context, PreferencesKeys.USER_NAME_KEY).collect {
+                _userName.value = it ?: ""
+            }
+        }
+    }
+    fun saveToDataStore(username: String) {
+        viewModelScope.launch {
+            com.example.bestflight.data.saveToDataStore(context, username, PreferencesKeys.USER_NAME_KEY)
+            _userName.value = username
+        }
+    }
+
 }

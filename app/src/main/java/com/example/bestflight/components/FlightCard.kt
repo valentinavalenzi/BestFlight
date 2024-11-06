@@ -30,6 +30,7 @@ import coil.compose.AsyncImage
 import com.example.bestflight.R
 import com.example.bestflight.home.FlightModel
 import com.example.bestflight.ui.theme.DarkBlue
+import com.example.bestflight.ui.theme.White
 
 @Composable
 fun FlightCard(
@@ -40,7 +41,7 @@ fun FlightCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .background(Color.White, shape = RoundedCornerShape(10.dp))
+            .background(White, shape = RoundedCornerShape(10.dp))
             .padding(16.dp)
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
@@ -110,7 +111,8 @@ fun FlightCardPreview() {
         id = "1",
         from = "EZE",
         to = "MIA",
-        to_name = "MIAMI",
+        from_name = "Buenos Aires",
+        to_name = "Miami",
         departure_time = "10/10/24 02:30pm",
         arrival_time = "11/10/24 01:00am",
         flight_duration = "10:30hs",

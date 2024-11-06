@@ -15,7 +15,7 @@
     <string name="arrow" translatable="false">→</string>
     <string name="set_user_name">Please, enter your name: </string>
     <string name="ok" translatable="false">Ok</string>
-    <string name="name_example" translatable="false">John Doe</string>
+    <string name="name_example" translatable="false">User Name</string>
     <string name="flight_from">Flight from </string>
     <string name="to">to</string>
     <string name="flight_number">Flight Number:</string>
@@ -29,4 +29,8 @@
     <string name="destination">Destination: </string>
     <string name="error">There has been an error.</string>
     <string name="ticket_already_bought">You have already bought this ticket.</string>
+    <string name="auth_error">Authentication couldn\'t complete</string>
+    <string name="auth_failed">Authentication failed. Try again</string>
+    <string name="from">From</string>
+    <string name="to2">To</string>
 </resources>
