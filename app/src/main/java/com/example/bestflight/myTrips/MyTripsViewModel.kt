@@ -36,6 +36,7 @@ class MyTripsViewModel @Inject constructor(
                         viewModelScope.launch {
                             // Create a Trip from the flight details
                             val trip = Trip(
+                                id = flightId.toInt(),
                                 from = flightModel.from,
                                 to = flightModel.to,
                                 to_name = flightModel.to_name,

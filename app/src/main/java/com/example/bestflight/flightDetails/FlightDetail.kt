@@ -32,29 +32,23 @@ import coil.compose.AsyncImage
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bestflight.R
 import com.example.bestflight.myTrips.MyTripsViewModel
-import com.example.bestflight.security.BiometricAuthManager
 import com.example.bestflight.ui.theme.Blue
 import com.example.bestflight.ui.theme.largeText
 import com.example.bestflight.ui.theme.mediumText
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import androidx.navigation.NavController
+import com.example.bestflight.data.Trip
 
 
 @Composable
-fun FlightDetail(flightId: String) {
+fun FlightDetail(flightId: String, navController: NavController) {
 
     val flightDetailViewModel = hiltViewModel<FlightDetailViewModel>()
     val flightDetail by flightDetailViewModel.flight.collectAsState()
-    val loading by flightDetailViewModel.loadingFlight.collectAsState()
-    val showRetry by flightDetailViewModel.showRetry.collectAsState()
-
-//    LaunchedEffect(flightId) {
-//        flightDetailViewModel.retryLoadingFlight(flightId)
-//    }
 
     val context = LocalContext.current
-    val isAuthenticated by flightDetailViewModel.isBiometricAuthenticated.collectAsState()
     val biometricManager = remember { BiometricManager.from(context) }
     val isBiometricAvailable = remember {
         biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
@@ -63,6 +57,9 @@ fun FlightDetail(flightId: String) {
     val myTripsViewModel =
         hiltViewModel<MyTripsViewModel>() // when purchased, we need to add a trip to My Trips
 
+    val tripsList by myTripsViewModel.tripList.collectAsState(initial = listOf())
+    val isTripInMyTrips = tripsList.any { it.id.toString() == flightId }
+    val trip: Trip? = tripsList.find { it.id.toString() == flightId }
     flightDetail?.let { flight ->
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
@@ -148,17 +145,28 @@ fun FlightDetail(flightId: String) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(
                             onClick = {
-                                when (isBiometricAvailable) {
-                                    BiometricManager.BIOMETRIC_SUCCESS -> {
-                                        flightDetailViewModel.authenticateBiometrically(
-                                            onSuccess = {
-                                                myTripsViewModel.addTrip(flightId)
-                                            },
-                                            activityContext = context
-                                        )
-                                    }
-                                    else -> {
-                                        Toast.makeText(context, "Biometric authentication not supported.", Toast.LENGTH_SHORT).show()
+                                if (isTripInMyTrips) {
+                                    myTripsViewModel.deleteTrip(trip!!)
+                                    navController.popBackStack()
+                                } else {
+                                    when (isBiometricAvailable) {
+                                        BiometricManager.BIOMETRIC_SUCCESS -> {
+                                            flightDetailViewModel.authenticateBiometrically(
+                                                onSuccess = {
+                                                    myTripsViewModel.addTrip(flightId)
+                                                    navController.popBackStack()
+                                                },
+                                                activityContext = context
+                                            )
+                                        }
+
+                                        else -> {//TODO fix string here, should be error on purchasing also, instead of auth
+                                            Toast.makeText(
+                                                context,
+                                                "Biometric authentication not supported.",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
                                 }
                             },
@@ -167,7 +175,10 @@ fun FlightDetail(flightId: String) {
                                 .padding(16.dp)
                                 .fillMaxWidth(0.7f)
                         ) {
-                            Text(text = stringResource(id = R.string.purchase_flight))
+                            Text(
+                                text = if (isTripInMyTrips) stringResource(id = R.string.delete_trip)
+                                else stringResource(id = R.string.purchase_flight)
+                            )
                         }
                     }
                 }
@@ -199,8 +210,8 @@ fun FlightInfoRow(label: String, value: String) {
     }
 }
 
-@Preview
-@Composable
-fun FlightDetailPreview() {
-    FlightDetail(flightId = "1")
-}
+//@Preview
+//@Composable
+//fun FlightDetailPreview() {
+//    FlightDetail(flightId = "1")
+//}

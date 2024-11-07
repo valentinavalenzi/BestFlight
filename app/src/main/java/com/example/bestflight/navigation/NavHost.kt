@@ -28,16 +28,17 @@ fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostControl
             })
         }
         composable(route = BestFlightScreen.MyTrips.name) {
-            MyTrips()
+            MyTrips(onNavigateToFlightDetail = { flightId ->
+                navController.navigate("${BestFlightScreen.FlightDetail.name}/$flightId")
+            })
         }
         composable(
             route = "${BestFlightScreen.FlightDetail.name}/{flightId}",
         ) { backStackEntry ->
             val flightId = backStackEntry.arguments?.getString("flightId")
             flightId?.let { id ->
-                FlightDetail(flightId = id)
+                FlightDetail(flightId = id, navController)
             }
         }
-
     }
 }

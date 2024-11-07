@@ -29,10 +29,11 @@ import com.example.bestflight.ui.theme.largeText
 import com.example.bestflight.ui.theme.superLargeText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.IconButton
+import com.example.bestflight.ui.theme.Red
 import com.example.bestflight.ui.theme.White
 
 @Composable
-fun MyTrips() {
+fun MyTrips(onNavigateToFlightDetail: (String) -> Unit) {
     val viewModel = hiltViewModel<MyTripsViewModel>()
     val tripsList by viewModel.tripList.collectAsState(initial = listOf())
 
@@ -61,9 +62,11 @@ fun MyTrips() {
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(tripsList) { trip ->
-                    TripCard(trip = trip, onDelete = { viewModel.deleteTrip(trip) }) {
-                        // Handle click, such as navigating to trip details
-                    }
+                    TripCard(
+                        trip = trip,
+                        onDelete = { viewModel.deleteTrip(trip) },
+                        onClick = { onNavigateToFlightDetail(trip.id.toString()) }
+                    )
                 }
             }
         }
@@ -88,15 +91,18 @@ fun TripCard(trip: Trip, onDelete: () -> Unit, onClick: () -> Unit) {
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = stringResource(id = R.string.destination) + " ${trip.to_name}", fontSize = largeText)
+                Text(
+                    text = stringResource(id = R.string.destination) + " ${trip.to_name}",
+                    fontSize = largeText
+                )
+                Text(text = trip.from)
                 Text(text = trip.departure_time)
-                // Add more trip details here
             }
             IconButton(onClick = { onDelete() }) {
                 Icon(
-                    imageVector = Icons.Default.Close, // Use appropriate icon or drawable resource
+                    imageVector = Icons.Default.Close,
                     contentDescription = "Delete Trip",
-                    tint = Color.Red // You can change the color as needed
+                    tint = Red
                 )
             }
         }

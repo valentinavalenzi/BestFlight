@@ -41,24 +41,55 @@ import com.example.bestflight.ui.theme.Blue
 import com.example.bestflight.ui.theme.DarkBlue
 import com.example.bestflight.ui.theme.White
 import com.example.bestflight.ui.theme.largeText
+import com.example.bestflight.ui.theme.size10dp
+import com.example.bestflight.ui.theme.size20dp
+import com.example.bestflight.ui.theme.size24dp
+import com.example.bestflight.ui.theme.size50sp
+import com.example.bestflight.ui.theme.size64dp
 import com.example.bestflight.ui.theme.smallText
 import com.example.bestflight.ui.theme.superLargeText
 
 @Composable
 fun Home(onNavigateToFlight: (String) -> Unit) {
 
+    val viewModel = hiltViewModel<HomeViewModel>()
+    val userName by viewModel.userName.collectAsState()
+    val flights by viewModel.filteredFlights.collectAsState()
+    val loading by viewModel.loadingFlights.collectAsState()
+    val showRetry by viewModel.showRetry.collectAsState()
+
+    HomeContent(
+        userName = userName,
+        flights = flights,
+        loading = loading,
+        showRetry = showRetry,
+        onSearchFromChanged = { viewModel.onSearchFromTextChanged(it) },
+        onSearchDestinationChanged = { viewModel.onSearchDestinationTextChanged(it) },
+        onRetry = { viewModel.retryLoadingFlights() },
+        onNavigateToFlight = onNavigateToFlight,
+        onSaveUserName = { viewModel.saveToDataStore(it) }
+    )
+}
+
+@Composable
+fun HomeContent(
+    userName: String = "",
+    flights: List<FlightModel> = emptyList(),
+    loading: Boolean = false,
+    showRetry: Boolean = false,
+    onSearchFromChanged: (String) -> Unit = {},
+    onSearchDestinationChanged: (String) -> Unit = {},
+    onRetry: () -> Unit = {},
+    onNavigateToFlight: (String) -> Unit = {},
+    onSaveUserName: (String) -> Unit = {}
+) {
     var searchFromText by remember { mutableStateOf("") }
     var searchDestinationText by remember { mutableStateOf("") }
-    val viewModel = hiltViewModel<HomeViewModel>()
-
-    val userName by viewModel.userName.collectAsState()
-    var userNameLocal by remember {
-        mutableStateOf("")
-    }
+    var userNameLocal by remember { mutableStateOf("") }
 
     if (userName.isEmpty()) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+            verticalArrangement = Arrangement.spacedBy(size10dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -75,7 +106,8 @@ fun Home(onNavigateToFlight: (String) -> Unit) {
             )
             Button(
                 modifier = Modifier.background(color = Color.Transparent),
-                onClick = { viewModel.saveToDataStore(userNameLocal) }) {
+                onClick = { onSaveUserName(userNameLocal) }
+            ) {
                 Text(text = stringResource(id = R.string.ok))
             }
         }
@@ -84,9 +116,8 @@ fun Home(onNavigateToFlight: (String) -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(24.dp),
+                .padding(size24dp),
         ) {
-            // Greeting
             Text(
                 text = stringResource(id = R.string.welcome) + ", " + userName,
                 fontSize = smallText,
@@ -98,7 +129,7 @@ fun Home(onNavigateToFlight: (String) -> Unit) {
                 color = White,
                 fontWeight = FontWeight.Bold,
                 style = TextStyle(
-                    lineHeight = 50.sp,
+                    lineHeight = size50sp,
                     fontFamily = FontFamily.SansSerif
                 )
             )
@@ -108,40 +139,35 @@ fun Home(onNavigateToFlight: (String) -> Unit) {
             SearchBar(
                 onChange = {
                     searchFromText = it
-                    viewModel.onSearchFromTextChanged(it)
+                    onSearchFromChanged(it)
                 },
                 onClear = {
                     searchFromText = ""
-                    viewModel.onSearchFromTextChanged("")
+                    onSearchFromChanged("")
                 }
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(size20dp))
             Text(text = stringResource(id = R.string.to2), fontSize = largeText, color = White)
             SearchBar(
                 onChange = {
                     searchDestinationText = it
-                    viewModel.onSearchDestinationTextChanged(it)
+                    onSearchDestinationChanged(it)
                 },
                 onClear = {
                     searchDestinationText = ""
-                    viewModel.onSearchDestinationTextChanged("")
+                    onSearchDestinationChanged("")
                 }
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(size20dp))
 
-            val flights by viewModel.filteredFlights.collectAsState()
-            val loading by viewModel.loadingFlights.collectAsState()
-            val showRetry by viewModel.showRetry.collectAsState()
+            Spacer(modifier = Modifier.height(size20dp))
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Display flight list based on loading state
             when {
                 loading -> {
                     Box(modifier = Modifier.fillMaxSize()) {
                         CircularProgressIndicator(
                             modifier = Modifier
-                                .size(64.dp)
+                                .size(size64dp)
                                 .align(Alignment.Center),
                             color = Blue,
                             trackColor = DarkBlue,
@@ -152,7 +178,7 @@ fun Home(onNavigateToFlight: (String) -> Unit) {
                 showRetry -> {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(
-                            10.dp,
+                            size10dp,
                             Alignment.CenterVertically
                         ),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -162,10 +188,10 @@ fun Home(onNavigateToFlight: (String) -> Unit) {
                             fontSize = largeText,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
-                            color = Color.White,
+                            color = White,
                         )
-                        Button(onClick = { viewModel.retryLoadingFlights() }) {
-                            stringResource(id = R.string.try_again)
+                        Button(onClick = onRetry) {
+                            Text(text = stringResource(id = R.string.try_again))
                         }
                     }
                 }
@@ -175,7 +201,8 @@ fun Home(onNavigateToFlight: (String) -> Unit) {
                         items(flights) { flight ->
                             FlightsView(
                                 flight = flight,
-                                onClick = { onNavigateToFlight(flight.id) })
+                                onClick = { onNavigateToFlight(flight.id) }
+                            )
                         }
                     }
                 }
@@ -198,5 +225,39 @@ fun FlightsView(
 @Preview
 @Composable
 fun HomePreview() {
-
+    HomeContent(
+        userName = "Preview User",
+        flights = listOf(
+            FlightModel(
+                id = "1",
+                from = "JFK",
+                to = "MIA",
+                from_name = "New York",
+                to_name = "Miami",
+                departure_time = "10:00 AM",
+                arrival_time =  "8:30pm",
+                flight_duration = "5hs3min",
+                flight_number = "AA221",
+                destination_img = "",
+                included_baggage = "12kg",
+                price = "200",
+                stops_number = "2"
+            ),
+            FlightModel(
+                id = "2",
+                from = "LAX",
+                to = "MIA",
+                from_name = "Los Angeles",
+                to_name = "Miami",
+                departure_time = "10:00 AM",
+                arrival_time =  "8:30pm",
+                flight_duration = "5hs3min",
+                flight_number = "AA235",
+                destination_img = "",
+                included_baggage = "12kg",
+                price = "2999",
+                stops_number = "1"
+            )
+        )
+    )
 }
