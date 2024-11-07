@@ -38,8 +38,16 @@ import com.example.bestflight.ui.theme.mediumText
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.example.bestflight.data.Trip
+import com.example.bestflight.ui.theme.Black
+import com.example.bestflight.ui.theme.White
+import com.example.bestflight.ui.theme.size10dp
+import com.example.bestflight.ui.theme.size16dp
+import com.example.bestflight.ui.theme.size250dp
 
 
 @Composable
@@ -60,12 +68,13 @@ fun FlightDetail(flightId: String, navController: NavController) {
     val tripsList by myTripsViewModel.tripList.collectAsState(initial = listOf())
     val isTripInMyTrips = tripsList.any { it.id.toString() == flightId }
     val trip: Trip? = tripsList.find { it.id.toString() == flightId }
+
     flightDetail?.let { flight ->
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
+                    .height(size250dp)
             ) {
                 AsyncImage(
                     model = flight.destination_img,
@@ -101,7 +110,7 @@ fun FlightDetail(flightId: String, navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(size16dp)
             ) {
                 FlightInfoRow(
                     label = stringResource(id = R.string.flight_number),
@@ -140,7 +149,7 @@ fun FlightDetail(flightId: String, navController: NavController) {
                             text = stringResource(id = R.string.price) + " \$${flight.price}",
                             fontSize = largeText,
                             fontWeight = FontWeight.Bold,
-                            color = Blue
+                            color = White
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(
@@ -160,10 +169,10 @@ fun FlightDetail(flightId: String, navController: NavController) {
                                             )
                                         }
 
-                                        else -> {//TODO fix string here, should be error on purchasing also, instead of auth
+                                        else -> {
                                             Toast.makeText(
                                                 context,
-                                                "Biometric authentication not supported.",
+                                                ContextCompat.getString(context, R.string.purchase_error),
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                         }
@@ -172,12 +181,13 @@ fun FlightDetail(flightId: String, navController: NavController) {
                             },
                             shape = RoundedCornerShape(50),
                             modifier = Modifier
-                                .padding(16.dp)
+                                .padding(size16dp)
                                 .fillMaxWidth(0.7f)
                         ) {
                             Text(
                                 text = if (isTripInMyTrips) stringResource(id = R.string.delete_trip)
-                                else stringResource(id = R.string.purchase_flight)
+                                else stringResource(id = R.string.purchase_flight),
+                                color = White
                             )
                         }
                     }
@@ -192,20 +202,22 @@ fun FlightInfoRow(label: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = size10dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = label,
             fontWeight = FontWeight.Bold,
             fontSize = mediumText,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            color = White
         )
         Text(
             text = value,
             fontSize = mediumText,
             textAlign = TextAlign.End,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            color = White
         )
     }
 }

@@ -34,4 +34,5 @@
     <string name="from">From</string>
     <string name="to2">To</string>
     <string name="delete_trip">Delete Trip</string>
+    <string name="purchase_error">Error with purchase. Try Again</string>
 </resources>

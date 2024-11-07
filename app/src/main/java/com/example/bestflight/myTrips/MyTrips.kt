@@ -1,12 +1,14 @@
 package com.example.bestflight.myTrips
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,8 +31,14 @@ import com.example.bestflight.ui.theme.largeText
 import com.example.bestflight.ui.theme.superLargeText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.IconButton
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.bestflight.ui.theme.Black
+import com.example.bestflight.ui.theme.BlueGrey80
+import com.example.bestflight.ui.theme.DeepBlue
+import com.example.bestflight.ui.theme.PastelBlue
 import com.example.bestflight.ui.theme.Red
 import com.example.bestflight.ui.theme.White
+import com.example.bestflight.ui.theme.size16dp
 
 @Composable
 fun MyTrips(onNavigateToFlightDetail: (String) -> Unit) {
@@ -78,12 +86,13 @@ fun TripCard(trip: Trip, onDelete: () -> Unit, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = size16dp)
             .clickable { onClick() },
+        colors = CardDefaults.cardColors(containerColor = PastelBlue)
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(size16dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -93,10 +102,14 @@ fun TripCard(trip: Trip, onDelete: () -> Unit, onClick: () -> Unit) {
             ) {
                 Text(
                     text = stringResource(id = R.string.destination) + " ${trip.to_name}",
-                    fontSize = largeText
+                    fontSize = largeText,
+                    color = DeepBlue
                 )
-                Text(text = trip.from)
-                Text(text = trip.departure_time)
+                Text(
+                    text = stringResource(id = R.string.from) + " ${trip.from}",
+                    color = DeepBlue
+                )
+                Text(text = trip.departure_time, color = BlueGrey80)
             }
             IconButton(onClick = { onDelete() }) {
                 Icon(
@@ -107,4 +120,27 @@ fun TripCard(trip: Trip, onDelete: () -> Unit, onClick: () -> Unit) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun TripCardPreview() {
+    val sampleTrip = Trip(
+        id = 1,
+        from = "New York",
+        to = "London",
+        to_name = "London",
+        departure_time = "10:00 AM",
+        arrival_time = "10:00 PM",
+        flight_duration = "8 hours",
+        stops_number = "Non-stop",
+        flight_number = "NY123",
+        included_baggage = "2 pieces"
+    )
+
+    TripCard(
+        trip = sampleTrip,
+        onDelete = { },
+        onClick = { }
+    )
 }

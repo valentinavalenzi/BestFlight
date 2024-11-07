@@ -1,5 +1,6 @@
 package com.example.bestflight.navigation
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -24,6 +25,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.bestflight.ui.theme.DarkBlue
+import com.example.bestflight.ui.theme.White
 
 @Composable
 fun BottomBar(
@@ -79,10 +81,10 @@ fun TabView(tabBarItems: List<TabBarItem>, onNavigate: (String) -> Unit) {
                 label = { Text(tabBarItem.title) },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = Color.Transparent,
-                    unselectedIconColor = DarkBlue,
-                    selectedIconColor = DarkBlue,
-                    unselectedTextColor = DarkBlue,
-                    selectedTextColor = DarkBlue
+                    unselectedIconColor = if (isSystemInDarkTheme()) White else DarkBlue,
+                    selectedIconColor = if (isSystemInDarkTheme()) White else DarkBlue,
+                    unselectedTextColor = if (isSystemInDarkTheme()) White else DarkBlue,
+                    selectedTextColor = if (isSystemInDarkTheme()) White else DarkBlue
                 )
             )
         }

@@ -17,7 +17,9 @@ val size40sp = 40.sp
 val size50sp = 50.sp
 
 val size10dp = 10.dp
+val size16dp = 16.dp
 val size20dp = 20.dp
 val size24dp = 24.dp
 val size64dp = 64.dp
+val size250dp = 250.dp
 

@@ -41,6 +41,7 @@ import com.example.bestflight.ui.theme.Blue
 import com.example.bestflight.ui.theme.DarkBlue
 import com.example.bestflight.ui.theme.White
 import com.example.bestflight.ui.theme.largeText
+import com.example.bestflight.ui.theme.mediumText
 import com.example.bestflight.ui.theme.size10dp
 import com.example.bestflight.ui.theme.size20dp
 import com.example.bestflight.ui.theme.size24dp
@@ -135,7 +136,7 @@ fun HomeContent(
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text(text = stringResource(id = R.string.from), fontSize = largeText, color = White)
+            Text(text = stringResource(id = R.string.from), fontSize = mediumText, color = White)
             SearchBar(
                 onChange = {
                     searchFromText = it
@@ -147,7 +148,7 @@ fun HomeContent(
                 }
             )
             Spacer(modifier = Modifier.height(size20dp))
-            Text(text = stringResource(id = R.string.to2), fontSize = largeText, color = White)
+            Text(text = stringResource(id = R.string.to2), fontSize = mediumText, color = White)
             SearchBar(
                 onChange = {
                     searchDestinationText = it
