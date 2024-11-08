@@ -38,7 +38,11 @@ import com.example.bestflight.ui.theme.DeepBlue
 import com.example.bestflight.ui.theme.PastelBlue
 import com.example.bestflight.ui.theme.Red
 import com.example.bestflight.ui.theme.White
+import com.example.bestflight.ui.theme.size10dp
 import com.example.bestflight.ui.theme.size16dp
+import com.example.bestflight.ui.theme.size20dp
+import com.example.bestflight.ui.theme.size24dp
+import com.example.bestflight.ui.theme.size50sp
 
 @Composable
 fun MyTrips(onNavigateToFlightDetail: (String) -> Unit) {
@@ -47,7 +51,7 @@ fun MyTrips(onNavigateToFlightDetail: (String) -> Unit) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(size20dp, alignment = Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -56,10 +60,10 @@ fun MyTrips(onNavigateToFlightDetail: (String) -> Unit) {
             color = White,
             fontWeight = FontWeight.Bold,
             style = TextStyle(
-                lineHeight = 50.sp,
+                lineHeight = size50sp,
                 fontFamily = FontFamily.SansSerif
             ),
-            modifier = Modifier.padding(top = 24.dp)
+            modifier = Modifier.padding(top = size24dp)
         )
 
         if (tripsList.isEmpty()) {
@@ -67,7 +71,7 @@ fun MyTrips(onNavigateToFlightDetail: (String) -> Unit) {
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(size10dp)
             ) {
                 items(tripsList) { trip ->
                     TripCard(

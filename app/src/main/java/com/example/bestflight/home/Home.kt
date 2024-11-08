@@ -31,8 +31,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bestflight.R
 import com.example.bestflight.components.FlightCard
@@ -134,7 +132,7 @@ fun HomeContent(
                     fontFamily = FontFamily.SansSerif
                 )
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(size20dp))
 
             Text(text = stringResource(id = R.string.from), fontSize = mediumText, color = White)
             SearchBar(

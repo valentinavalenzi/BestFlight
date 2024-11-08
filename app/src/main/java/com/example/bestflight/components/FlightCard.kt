@@ -19,18 +19,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.bestflight.R
 import com.example.bestflight.home.FlightModel
+import com.example.bestflight.ui.theme.Black
+import com.example.bestflight.ui.theme.BlueGrey40
 import com.example.bestflight.ui.theme.DarkBlue
 import com.example.bestflight.ui.theme.White
+import com.example.bestflight.ui.theme.size10dp
+import com.example.bestflight.ui.theme.size12sp
+import com.example.bestflight.ui.theme.size16dp
+import com.example.bestflight.ui.theme.size16sp
+import com.example.bestflight.ui.theme.size18sp
+import com.example.bestflight.ui.theme.size4dp
+import com.example.bestflight.ui.theme.size500dp
+import com.example.bestflight.ui.theme.size70dp
 
 @Composable
 fun FlightCard(
@@ -40,9 +47,9 @@ fun FlightCard(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .background(White, shape = RoundedCornerShape(10.dp))
-            .padding(16.dp)
+            .padding(size16dp)
+            .background(White, shape = RoundedCornerShape(size10dp))
+            .padding(size16dp)
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -52,43 +59,42 @@ fun FlightCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = flight.from,
-                    fontSize = 18.sp,
+                    fontSize = size18sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.DarkGray
+                    color = Black
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(size4dp))
                 Text(
                     text = stringResource(id = R.string.arrow),
-                    fontSize = 16.sp,
-                    color = Color.LightGray
+                    fontSize = size16sp,
+                    color = Black
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(size4dp))
                 Text(
                     text = flight.to,
-                    fontSize = 18.sp,
+                    fontSize = size18sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.DarkGray
+                    color = Black
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(size4dp))
             Text(
                 text = stringResource(id = R.string.duration) + flight.flight_duration,
-                fontSize = 12.sp,
-                color = Color.Gray
+                fontSize = size12sp,
+                color = BlueGrey40
             )
         }
 
         // Destination Image
         Box(
             modifier = Modifier
-                .size(70.dp)
-                .padding(2.dp)
+                .size(size70dp)
         ) {
             AsyncImage(
                 model = flight.destination_img,
                 contentDescription = "Destination Image",
                 modifier = Modifier
-                    .size(500.dp)
+                    .size(size500dp)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop
             )
@@ -97,7 +103,7 @@ fun FlightCard(
         // Flight Price
         Text(
             text = stringResource(id = R.string.money_sign) + flight.price,
-            fontSize = 18.sp,
+            fontSize = size18sp,
             fontWeight = FontWeight.Bold,
             color = DarkBlue
         )

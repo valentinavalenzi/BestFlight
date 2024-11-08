@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name" translatable="false">BestFlight</string>
+    <string name="welcome">Ciao</string>
+    <string name="profile">Il mio conto</string>
+    <string name="trips">I miei viaggi</string>
+    <string name="notifications">Notifiche</string>
+    <string name="home_greeting">Dove ti piacerebbe andare\?</string>
+    <string name="search_bar">Cerca città...</string>
+    <string name="please_try_again">Per favore, riprova più tardi.</string>
+    <string name="try_again">Riprova</string>
+    <string name="cant_get_flights">Impossibile ottenere voli. Per favore riprova più tardi</string>
+    <string name="cant_get_flight">Impossibile ottenere informazioni sul volo</string>
+    <string name="money_sign" translatable="false">$</string>
+    <string name="duration">Durata:</string>
+    <string name="arrow" translatable="false">→</string>
+    <string name="set_user_name">Per favore, inserisci il tuo nome:</string>
+    <string name="ok" translatable="false">Ok</string>
+    <string name="name_example" translatable="false">User Name</string>
+    <string name="flight_from">Volo da</string>
+    <string name="to">A</string>
+    <string name="flight_number">Numero del volo:</string>
+    <string name="departure_time">Orario di partenza:</string>
+    <string name="arrival_time">Orario di arrivo:</string>
+    <string name="stops">Fermate:</string>
+    <string name="baggage_included">Bagaglio Incluso:</string>
+    <string name="price">Prezzo:</string>
+    <string name="purchase_flight">Acquista il volo</string>
+    <string name="no_trips">Non hai ancora acquistato viaggi!</string>
+    <string name="destination">Destinazione:</string>
+    <string name="error">Si è verificato un errore.</string>
+    <string name="ticket_already_bought">Hai già acquistato questo biglietto.</string>
+    <string name="auth_error">Impossibile completare l\'autenticazione</string>
+    <string name="auth_failed">Autenticazione non riuscita. Riprova</string>
+    <string name="from">Da</string>
+    <string name="to2">A</string>
+    <string name="delete_trip">Elimina viaggio</string>
+    <string name="purchase_error">Errore con l\'acquisto. Riprova</string>
+    <string name="trip_purchased_successfully">Viaggio acquistato con successo!</string>
+    <string name="trip_deleted_successfully">Viaggio eliminato con successo!</string>
+    <string name="biom_auth">Autenticazione biometrica</string>
+    <string name="log_in_biom_cred">Accedi utilizzando le tue credenziali biometriche</string>
+</resources>

@@ -23,11 +23,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.bestflight.R
@@ -35,6 +32,13 @@ import com.example.bestflight.ui.theme.Black
 import com.example.bestflight.ui.theme.BlueGrey40
 import com.example.bestflight.ui.theme.BlueGrey80
 import com.example.bestflight.ui.theme.White
+import com.example.bestflight.ui.theme.size10dp
+import com.example.bestflight.ui.theme.size16dp
+import com.example.bestflight.ui.theme.size18dp
+import com.example.bestflight.ui.theme.size18sp
+import com.example.bestflight.ui.theme.size24dp
+import com.example.bestflight.ui.theme.size48dp
+import com.example.bestflight.ui.theme.size8dp
 
 @Composable
 fun SearchBar(
@@ -48,21 +52,21 @@ fun SearchBar(
             .fillMaxWidth()
             .background(
                 White,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(size10dp)
             )
-            .padding(horizontal = 16.dp)
-            .height(48.dp),
+            .padding(horizontal = size16dp)
+            .height(size48dp),
     ) {
         Icon(
             imageVector = Icons.Filled.Search,
             contentDescription = "Search Icon",
             tint = BlueGrey40,
             modifier = Modifier
-                .size(24.dp)
+                .size(size24dp)
                 .align(Alignment.CenterVertically)
 
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(size8dp))
 
         BasicTextField(
             value = searchText,
@@ -72,15 +76,15 @@ fun SearchBar(
             },
             modifier = Modifier
                 .weight(1f)
-                .padding(end = 8.dp)
+                .padding(end = size8dp)
                 .align(Alignment.CenterVertically),
             singleLine = true,
-            textStyle = TextStyle(fontSize = 18.sp, color = Black),
+            textStyle = TextStyle(fontSize = size18sp, color = Black),
             decorationBox = { innerTextField ->
                 if (searchText.isEmpty()) {
                     Text(
                         text = stringResource(id = R.string.search_bar),
-                        style = TextStyle(fontSize = 18.sp, color = BlueGrey80)
+                        style = TextStyle(fontSize = size18sp, color = BlueGrey80)
                     )
                 }
                 innerTextField()
@@ -96,7 +100,7 @@ fun SearchBar(
                     contentDescription = "Clear Search",
                     tint = BlueGrey80,
                     modifier = Modifier
-                        .size(18.dp)
+                        .size(size18dp)
                         .padding(0.dp)
                         .align(Alignment.CenterVertically)
                 )

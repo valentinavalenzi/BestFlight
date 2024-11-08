@@ -9,6 +9,7 @@ import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import com.example.bestflight.R
 
 class BiometricAuthManager @Inject constructor() {
 
@@ -38,9 +39,8 @@ class BiometricAuthManager @Inject constructor() {
         )
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setAllowedAuthenticators(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
-            //TODO: fix these strings
-            .setTitle("Biometric Authentication")
-            .setSubtitle("Log in using your biometric credentials")
+            .setTitle(ContextCompat.getString(context, R.string.biom_auth))
+            .setSubtitle(ContextCompat.getString(context, R.string.log_in_biom_cred))
             .build()
         biometricPrompt.authenticate(promptInfo)
     }

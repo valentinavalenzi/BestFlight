@@ -20,34 +20,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bestflight.R
 import com.example.bestflight.myTrips.MyTripsViewModel
-import com.example.bestflight.ui.theme.Blue
 import com.example.bestflight.ui.theme.largeText
 import com.example.bestflight.ui.theme.mediumText
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.example.bestflight.data.Trip
-import com.example.bestflight.ui.theme.Black
 import com.example.bestflight.ui.theme.White
 import com.example.bestflight.ui.theme.size10dp
 import com.example.bestflight.ui.theme.size16dp
 import com.example.bestflight.ui.theme.size250dp
+import com.example.bestflight.ui.theme.size8dp
 
 
 @Composable
@@ -85,14 +80,13 @@ fun FlightDetail(flightId: String, navController: NavController) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(250.dp)
-                        .background(Color.Black.copy(alpha = 0.3f))
+                        .height(size250dp)
                 )
                 Box(
                     contentAlignment = Alignment.BottomStart,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp)
+                        .padding(size16dp)
                 ) {
                     Text(
                         text = stringResource(id = R.string.flight_from) + " ${flight.from} " + stringResource(
@@ -100,12 +94,12 @@ fun FlightDetail(flightId: String, navController: NavController) {
                         ) + " ${flight.to_name}",
                         fontSize = largeText,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = White
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(size16dp))
 
             Column(
                 modifier = Modifier
@@ -137,7 +131,7 @@ fun FlightDetail(flightId: String, navController: NavController) {
                     value = flight.included_baggage
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(size16dp))
 
                 // Price and Purchase Button
                 Box(
@@ -151,7 +145,7 @@ fun FlightDetail(flightId: String, navController: NavController) {
                             fontWeight = FontWeight.Bold,
                             color = White
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(size8dp))
                         Button(
                             onClick = {
                                 if (isTripInMyTrips) {

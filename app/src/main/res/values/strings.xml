@@ -35,4 +35,8 @@
     <string name="to2">To</string>
     <string name="delete_trip">Delete Trip</string>
     <string name="purchase_error">Error with purchase. Try Again</string>
+    <string name="trip_purchased_successfully">Trip purchased successfully!</string>
+    <string name="trip_deleted_successfully">Trip deleted successfully!</string>
+    <string name="biom_auth">Biometric Authentication</string>
+    <string name="log_in_biom_cred">Log in using your biometric credentials</string>
 </resources>

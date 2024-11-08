@@ -78,13 +78,11 @@ fun TabView(tabBarItems: List<TabBarItem>, onNavigate: (String) -> Unit) {
                         badgeAmount = tabBarItem.badgeAmount
                     )
                 },
-                label = { Text(tabBarItem.title) },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = Color.Transparent,
                     unselectedIconColor = if (isSystemInDarkTheme()) White else DarkBlue,
                     selectedIconColor = if (isSystemInDarkTheme()) White else DarkBlue,
                     unselectedTextColor = if (isSystemInDarkTheme()) White else DarkBlue,
-                    selectedTextColor = if (isSystemInDarkTheme()) White else DarkBlue
                 )
             )
         }

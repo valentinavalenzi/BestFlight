@@ -48,19 +48,17 @@ class MyTripsViewModel @Inject constructor(
                                 included_baggage = flightModel.included_baggage
                             )
                             bestFlightDatabase.tripDao().insert(trip)
-                            //TODO fix string here
-                            Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, R.string.trip_purchased_successfully, Toast.LENGTH_SHORT).show()
                         }
                     },
                     onFail = {
                         Toast.makeText(context, stringResource(id = R.string.error) + stringResource(id = R.string.try_again), Toast.LENGTH_SHORT).show()
                     },
                     loadingFinished = {
-                        // Handle loading finished, if needed
                     }
                 )
-            } else { //TODO fix string here
-                Toast.makeText(context, "You have already bought this ticket", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, R.string.ticket_already_bought, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -68,8 +66,7 @@ class MyTripsViewModel @Inject constructor(
     fun deleteTrip(trip: Trip) {
         viewModelScope.launch {
             bestFlightDatabase.tripDao().delete(trip)
-            // TODO: fix this string
-            Toast.makeText(context, "Trip deleted successfully!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.trip_deleted_successfully, Toast.LENGTH_SHORT).show()
         }
     }
 
