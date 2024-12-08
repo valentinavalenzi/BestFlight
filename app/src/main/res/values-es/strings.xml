@@ -39,4 +39,18 @@
     <string name="trip_deleted_successfully">¡Viaje eliminado con éxito!</string>
     <string name="biom_auth">Autenticación biométrica</string>
     <string name="log_in_biom_cred">Inicie sesión con sus credenciales biométricas</string>
+    <string name="add_payment_method">Agregar método de pago</string>
+    <string name="add_card">Agregar detalles de la tarjeta</string>
+    <string name="payment_methods">Métodos de pago actuales:</string>
+    <string name="card_number">Número de tarjeta</string>
+    <string name="exp_date">Fecha de expiración</string>
+    <string name="cvv" translatable="false">CVV</string>
+    <string name="confirm_payment">Confirmar pago</string>
+    <string name="ending_in">terminando en</string>
+    <string name="no_cards">¡Aún no tienes tarjetas agregadas!</string>
+    <string name="mm_yy">MM/AA</string>
+    <string name="cvv_example">123</string>
+    <string name="card_number_example">1234 5678 9012 3456</string>
+    <string name="fill_in">Por favor complete todos los campos</string>
+    <string name="saved_card_details">Detalles de la tarjeta guardada</string>
 </resources>

@@ -39,4 +39,18 @@
     <string name="trip_deleted_successfully">Trip deleted successfully!</string>
     <string name="biom_auth">Biometric Authentication</string>
     <string name="log_in_biom_cred">Log in using your biometric credentials</string>
+    <string name="add_payment_method">Add Payment Method</string>
+    <string name="add_card">Add Card Details</string>
+    <string name="payment_methods">Current payment methods:</string>
+    <string name="card_number">Card Number</string>
+    <string name="exp_date">Expiration Date</string>
+    <string name="cvv" translatable="false">CVV</string>
+    <string name="confirm_payment">Confirm Payment</string>
+    <string name="ending_in">Ending in</string>
+    <string name="no_cards">You have no cards added yet!</string>
+    <string name="mm_yy">MM/YY</string>
+    <string name="cvv_example" translatable="false">123</string>
+    <string name="card_number_example" translatable="false">1234 5678 9012 3456</string>
+    <string name="fill_in">Please fill in all fields</string>
+    <string name="saved_card_details">Saved card details</string>
 </resources>

@@ -8,9 +8,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
+import com.example.bestflight.account.Account
 import com.example.bestflight.flightDetails.FlightDetail
 import com.example.bestflight.home.Home
 import com.example.bestflight.myTrips.MyTrips
+import com.example.bestflight.addCardDetails.AddCardScreen
 
 @Composable
 fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostController) {
@@ -32,6 +34,9 @@ fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostControl
                 navController.navigate("${BestFlightScreen.FlightDetail.name}/$flightId")
             })
         }
+        composable(route = BestFlightScreen.Account.name) {
+            Account(navController)
+        }
         composable(
             route = "${BestFlightScreen.FlightDetail.name}/{flightId}",
         ) { backStackEntry ->
@@ -39,6 +44,9 @@ fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostControl
             flightId?.let { id ->
                 FlightDetail(flightId = id, navController)
             }
+        }
+        composable(route = BestFlightScreen.AddCard.name) {
+            AddCardScreen(navController)
         }
     }
 }

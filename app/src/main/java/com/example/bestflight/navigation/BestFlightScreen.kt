@@ -4,5 +4,6 @@ enum class BestFlightScreen {
     Home,
     MyTrips,
     Account,
-    FlightDetail
+    FlightDetail,
+    AddCard
 }

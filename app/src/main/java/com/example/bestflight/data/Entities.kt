@@ -17,3 +17,13 @@ data class Trip(
     val flight_number: String,
     val included_baggage: String,
 )
+
+@Entity
+data class Card(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val cardNumber: String,
+    val cardType: String,
+    val expirationDate: String,
+    val cvv: String
+)

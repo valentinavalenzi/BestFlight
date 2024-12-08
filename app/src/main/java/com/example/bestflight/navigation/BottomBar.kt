@@ -42,8 +42,13 @@ fun BottomBar(
         selectedIcon = Icons.Filled.Place,
         unselectedIcon = Icons.Outlined.Place
     )
+    val myAccountTab = TabBarItem(
+        title = BestFlightScreen.Account.name,
+        selectedIcon = Icons.Filled.Person,
+        unselectedIcon = Icons.Outlined.Person
+    )
 
-    val tabBarItems = listOf(homeTab, myTripsTab)
+    val tabBarItems = listOf(homeTab, myTripsTab, myAccountTab)
 
     TabView(tabBarItems, onNavigate)
 }

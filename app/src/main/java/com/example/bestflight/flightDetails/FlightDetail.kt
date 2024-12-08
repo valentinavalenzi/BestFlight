@@ -215,9 +215,3 @@ fun FlightInfoRow(label: String, value: String) {
         )
     }
 }
-
-//@Preview
-//@Composable
-//fun FlightDetailPreview() {
-//    FlightDetail(flightId = "1")
-//}
