@@ -1,6 +1,8 @@
 package com.example.bestflight.addCardDetails
 
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
@@ -13,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -42,11 +46,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bestflight.account.AccountViewModel
 import com.example.bestflight.navigation.BestFlightScreen
 import com.example.bestflight.ui.theme.MidBlue
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 enum class CardType {
-    VISA, MASTERCARD, AMEX, UNKNOWN
+    VISA, MASTERCARD, AMEX, CREDIT, DEBIT, UNKNOWN
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddCardScreen(navController: NavController) {
     val viewModel = hiltViewModel<AccountViewModel>()
@@ -58,6 +66,9 @@ fun AddCardScreen(navController: NavController) {
     var cardType by remember { mutableStateOf<CardType?>(null) }
     var expDate by remember { mutableStateOf(TextFieldValue(text = initialExpDate)) }
     var cvv by remember { mutableStateOf("") }
+
+    var isDropdownExpanded by remember { mutableStateOf(false) }
+    var selectedCardType by remember { mutableStateOf<CardType?>(null) }
 
     Column(
         modifier = Modifier
@@ -107,6 +118,36 @@ fun AddCardScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(size16dp))
 
+        if (cardType == CardType.UNKNOWN) {
+            Text(
+                text = stringResource(id = R.string.select_card_type),
+                fontSize = largeText,
+                color = White,
+                modifier = Modifier.padding(bottom = size16dp)
+            )
+            Box {
+                Button(onClick = { isDropdownExpanded = !isDropdownExpanded }) {
+                    Text(text = selectedCardType?.name ?: stringResource(id = R.string.choose))
+                }
+                DropdownMenu(
+                    expanded = isDropdownExpanded,
+                    onDismissRequest = { isDropdownExpanded = false }
+                ) {
+                    CardType.entries.filter { it != CardType.UNKNOWN }.forEach { type ->
+                        DropdownMenuItem(
+                            onClick = {
+                                selectedCardType = type
+                                isDropdownExpanded = false
+                            },
+                            text = { Text(type.name) }
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(size16dp))
+
         // Expiration Date Input
         Text(text = stringResource(id = R.string.exp_date), fontSize = largeText, color = White, modifier = Modifier.padding(bottom = size16dp))
         TextField(
@@ -136,16 +177,22 @@ fun AddCardScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(size16dp))
         Button(
             onClick = {
-                if(cardNumber.isNotEmpty() && expDate.toString().isNotEmpty() && cvv.isNotEmpty()) {
-                    viewModel.addCard(cardNumber, cardType.toString(), expDate.toString(), cvv)
-                    cardNumber = ""
-                    expDate = TextFieldValue(text = initialExpDate)
-                    cvv = ""
+                val finalCardType = if (cardType != CardType.UNKNOWN) cardType else selectedCardType
+                val isExpired = isCardExpired(expDate.text)
+                if (cardNumber.isNotEmpty() && expDate.text.isNotEmpty() && cvv.isNotEmpty() && finalCardType != null) {
+                    if (isExpired) {
+                        Toast.makeText(context, R.string.card_expired, Toast.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.addCard(cardNumber, finalCardType.toString(), expDate.text, cvv)
+                        cardNumber = ""
+                        expDate = TextFieldValue(text = initialExpDate)
+                        cvv = ""
+                        Toast.makeText(context, R.string.saved_card_details, Toast.LENGTH_SHORT).show()
+                        navController.navigate(BestFlightScreen.Account.name)
+                    }
                 } else {
                     Toast.makeText(context, R.string.fill_in, Toast.LENGTH_SHORT).show()
                 }
-                navController.navigate(BestFlightScreen.Account.name)
-                Toast.makeText(context, R.string.saved_card_details, Toast.LENGTH_SHORT).show()
             },
             colors = ButtonDefaults.buttonColors(containerColor = White)
         ) {
@@ -172,6 +219,17 @@ fun detectCardType(cardNumber: String): CardType {
         cardNumber.startsWith("5") -> CardType.MASTERCARD
         cardNumber.startsWith("3") -> CardType.AMEX
         else -> CardType.UNKNOWN
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun isCardExpired(expiryDate: String): Boolean {
+    return try {
+        val formatter = DateTimeFormatter.ofPattern("MM/yy")
+        val expDate = LocalDate.parse("01/$expiryDate", DateTimeFormatter.ofPattern("dd/MM/yy"))
+        expDate.isBefore(LocalDate.now().withDayOfMonth(1))
+    } catch (e: DateTimeParseException) {
+        true
     }
 }
 
